@@ -5,64 +5,129 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#62c7ff">
 <title>Fruit Catch Mobile</title>
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#78d7ff}body{touch-action:none}canvas{display:block;width:100vw;height:100vh}#ui{position:fixed;inset:0;pointer-events:none;padding:max(12px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom));color:#17373e}.top{display:flex;justify-content:space-between;font-weight:800;font-size:18px;text-shadow:0 1px 0 #fff}.mid{position:absolute;top:max(48px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);text-align:center;font-weight:800}#combo{font-size:22px;color:#f26d21}#timer{font-size:18px}#mission{position:absolute;bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:95%;text-align:center;font-size:13px;font-weight:700}.panel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(#8be0ffcc,#dfffffcc);z-index:4}.card{width:min(92vw,430px);background:#ffffffef;border-radius:28px;padding:24px;box-shadow:0 18px 60px #0003;text-align:center}h1{margin:0 0 8px;font-size:38px;line-height:1}p{margin:8px 0 18px}button{pointer-events:auto;border:0;border-radius:18px;padding:14px 18px;margin:6px;font-size:17px;font-weight:800;background:#1faf63;color:white;box-shadow:0 5px 0 #128449;cursor:pointer}button:active{transform:translateY(3px);box-shadow:0 2px 0 #128449}button.secondary{background:#2f8fe8;box-shadow:0 5px 0 #1c67ad}button.orange{background:#f09a28;box-shadow:0 5px 0 #bd6d09}.small{font-size:14px;opacity:.8}.hidden{display:none!important}
-</style>
-
 <link rel="icon" type="image/webp" href="/app-icon.webp">
 <link rel="apple-touch-icon" href="/app-icon.webp">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fruit Catch">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#78d7ff}body{touch-action:none}canvas{display:block;width:100vw;height:100vh}
+#ui{position:fixed;inset:0;pointer-events:none;padding:max(12px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom));color:#17373e}
+.top{display:flex;justify-content:space-between;font-weight:900;font-size:18px;text-shadow:0 1px 1px #fff}
+.mid{position:absolute;top:max(48px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);text-align:center;font-weight:900}
+#combo{font-size:23px;color:#f26d21;text-shadow:0 2px 6px #fff8}#timer{font-size:18px}
+#mission{position:absolute;bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:96%;text-align:center;font-size:13px;font-weight:800;text-shadow:0 1px 1px #fff}
+.panel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#8be0ffcc,#e8fff2dd);z-index:4;backdrop-filter:blur(10px)}
+.card{width:min(94vw,440px);background:#ffffffeb;border:1px solid #ffffffcc;border-radius:30px;padding:24px;box-shadow:0 22px 70px #0004;text-align:center}
+.logo{width:96px;height:96px;border-radius:24px;box-shadow:0 12px 28px #0003;margin-bottom:10px}
+h1{margin:0 0 8px;font-size:38px;line-height:1}p{margin:8px 0 18px}
+button,select,input{font:inherit}button{pointer-events:auto;border:0;border-radius:18px;padding:14px 18px;margin:6px;font-size:17px;font-weight:900;background:#1faf63;color:white;box-shadow:0 5px 0 #128449;cursor:pointer}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 #128449}button.secondary{background:#2f8fe8;box-shadow:0 5px 0 #1c67ad}button.orange{background:#f09a28;box-shadow:0 5px 0 #bd6d09}button.dark{background:#46525a;box-shadow:0 5px 0 #293138}
+.small{font-size:14px;opacity:.82}.hidden{display:none!important}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:12px 0;text-align:left}.row label{font-weight:800}.row select,.row input{pointer-events:auto;min-width:145px;border:1px solid #cadbe2;border-radius:12px;padding:9px;background:#fff}.pill{display:inline-block;padding:5px 10px;border-radius:999px;background:#e7f8ee;font-size:12px;font-weight:800;margin-top:6px}
+</style>
 </head>
 <body>
 <canvas id="game"></canvas>
 <div id="ui" class="hidden">
-  <div class="top"><span id="score">คะแนน 0</span><span id="lives">❤ 3</span></div>
-  <div class="mid"><div id="level">ด่าน 1</div><div id="timer"></div><div id="combo"></div></div>
-  <div id="mission"></div>
+ <div class="top"><span id="score">คะแนน 0</span><span id="lives">❤ 3</span></div>
+ <div class="mid"><div id="level">ด่าน 1</div><div id="timer"></div><div id="combo"></div><div id="weather" class="pill"></div></div>
+ <div id="mission"></div>
 </div>
+
 <div id="home" class="panel">
-  <div class="card">
-    <h1>🍎 Fruit Catch</h1>
-    <p>ลากตะกร้ารับผลไม้ • เก็บเหรียญ • หลบลูกสีดำ</p>
-    <div id="profile" class="small"></div>
-    <button id="play">▶ เล่นเลย</button>
-    <button id="time" class="secondary">⏱ 60 วินาที</button><br>
-    <button id="daily" class="orange">🎁 Daily Reward</button>
-    <button id="sound" class="secondary">🔊 เสียง: เปิด</button>
-    <p class="small">เล่นได้ด้วยนิ้วบนมือถือ หรือเมาส์บนคอม</p>
-  </div>
+ <div class="card">
+  <img class="logo" src="/app-icon.webp" alt="">
+  <h1>Fruit Catch</h1>
+  <p>3D-style • Day/Night • Weather • Mobile Optimized</p>
+  <div id="profile" class="small"></div>
+  <button id="play">▶ เล่นเลย</button>
+  <button id="time" class="secondary">⏱ 60 วินาที</button><br>
+  <button id="daily" class="orange">🎁 Daily Reward</button>
+  <button id="settings" class="dark">⚙ ตั้งค่าภาพ</button>
+  <button id="sound" class="secondary">🔊 เสียง: เปิด</button>
+  <p class="small">ระบบ Auto จะลดเอฟเฟกต์ให้อัตโนมัติถ้าเครื่องเริ่มหน่วง</p>
+ </div>
 </div>
+
+<div id="settingsPanel" class="panel hidden">
+ <div class="card">
+  <h1 style="font-size:30px">Graphics Settings</h1>
+  <div class="row"><label>คุณภาพ</label><select id="quality"><option>Low</option><option>Medium</option><option>High</option><option>Ultra</option></select></div>
+  <div class="row"><label>Render Scale</label><select id="scale"><option value=".7">70%</option><option value=".85">85%</option><option value="1">100%</option></select></div>
+  <div class="row"><label>FPS</label><select id="fps"><option value="30">30 FPS</option><option value="60">60 FPS</option></select></div>
+  <div class="row"><label>Bloom</label><input id="bloom" type="checkbox"></div>
+  <div class="row"><label>Fog</label><input id="fog" type="checkbox"></div>
+  <div class="row"><label>Particles</label><input id="particleToggle" type="checkbox"></div>
+  <div class="row"><label>Weather</label><select id="weatherMode"><option value="auto">Auto</option><option value="clear">Clear</option><option value="cloudy">Cloudy</option><option value="fog">Fog</option><option value="rain">Rain</option></select></div>
+  <button id="saveSettings">บันทึก</button><button id="closeSettings" class="secondary">กลับ</button>
+ </div>
+</div>
+
 <div id="over" class="panel hidden">
-  <div class="card">
-    <h1>จบเกม!</h1>
-    <p id="result"></p>
-    <button id="again">เล่นอีกครั้ง</button>
-    <button id="back" class="secondary">หน้าแรก</button>
-  </div>
+ <div class="card">
+  <img class="logo" src="/app-icon.webp" alt="">
+  <h1>จบเกม!</h1>
+  <p id="result"></p>
+  <button id="again">เล่นอีกครั้ง</button>
+  <button id="back" class="secondary">หน้าแรก</button>
+ </div>
 </div>
+
 <script>
-(()=>{const c=document.getElementById('game'),x=c.getContext('2d'),ui=document.getElementById('ui'),home=document.getElementById('home'),over=document.getElementById('over'),$=id=>document.getElementById(id);let W=0,H=0,dpr=1,running=false,timeAttack=false,last=0,spawn=0,elapsed=0,timeLeft=60,score=0,lives=3,level=1,combo=0,bestCombo=0,fruits=0,coins=0,bosses=0,basket={x:0,y:0,w:100,h:28},items=[],particles=[],slow=0,magnet=0,soundOn=localStorage.soundOn!=="0",bank=+(localStorage.coins||0),best=+(localStorage.best||0),xp=+(localStorage.xp||0),pl=+(localStorage.pl||1),stars=+(localStorage.stars||0);
-function save(){localStorage.coins=bank;localStorage.best=best;localStorage.xp=xp;localStorage.pl=pl;localStorage.stars=stars;localStorage.soundOn=soundOn?1:0}
-function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);basket.y=H-74}
-addEventListener('resize',resize);resize();
+(()=>{const c=document.getElementById('game'),x=c.getContext('2d'),$=id=>document.getElementById(id),ui=$('ui'),home=$('home'),over=$('over'),sp=$('settingsPanel');
+let W=0,H=0,dpr=1,running=false,timeAttack=false,last=0,spawn=0,elapsed=0,timeLeft=60,score=0,lives=3,level=1,combo=0,bestCombo=0,fruits=0,coins=0,bosses=0,basket={x:0,y:0,w:100,h:30},items=[],particles=[],weatherParticles=[],slow=0,magnet=0;
+let soundOn=localStorage.soundOn!=="0",bank=+(localStorage.coins||0),best=+(localStorage.best||0),xp=+(localStorage.xp||0),pl=+(localStorage.pl||1),stars=+(localStorage.stars||0);
+let cfg=JSON.parse(localStorage.graphics||'null')||{quality:'High',scale:1,fps:60,bloom:true,fog:true,particles:true,weather:'auto'};
+let weather='clear',weatherClock=0,fpsAcc=0,fpsFrames=0,avgFps=60;
+
+function save(){localStorage.coins=bank;localStorage.best=best;localStorage.xp=xp;localStorage.pl=pl;localStorage.stars=stars;localStorage.soundOn=soundOn?1:0;localStorage.graphics=JSON.stringify(cfg)}
+function applyQuality(){const q=cfg.quality;if(q==='Low'){cfg.scale=.7;cfg.bloom=false;cfg.fog=false;cfg.particles=false}else if(q==='Medium'){cfg.scale=.85;cfg.bloom=false;cfg.fog=true;cfg.particles=true}else if(q==='High'){cfg.scale=1;cfg.bloom=true;cfg.fog=true;cfg.particles=true}else{cfg.scale=1;cfg.bloom=true;cfg.fog=true;cfg.particles=true}resize()}
+function resize(){dpr=Math.min((devicePixelRatio||1)*cfg.scale,2);W=innerWidth;H=innerHeight;c.width=Math.max(1,Math.floor(W*dpr));c.height=Math.max(1,Math.floor(H*dpr));x.setTransform(dpr,0,0,dpr,0,0);basket.y=H-76}
+addEventListener('resize',resize);applyQuality();
+
 let ac;function beep(freq=600,d=.06,type='sine',vol=.05){if(!soundOn)return;ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;o.connect(g);g.connect(ac.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.stop(ac.currentTime+d)}
 function profile(){$('profile').textContent=`Lv.${pl}  XP ${xp}/${40+(pl-1)*20}  ★ ${stars}  🪙 ${bank}  สูงสุด ${best}`;$('sound').textContent=soundOn?'🔊 เสียง: เปิด':'🔇 เสียง: ปิด';const today=new Date().toISOString().slice(0,10);$('daily').disabled=localStorage.daily===today;$('daily').textContent=$('daily').disabled?'🎁 รับแล้ววันนี้':'🎁 Daily Reward'}profile();
+
 $('sound').onclick=()=>{soundOn=!soundOn;save();profile();beep(500)};
 $('daily').onclick=()=>{const today=new Date().toISOString().slice(0,10);if(localStorage.daily===today)return;localStorage.daily=today;bank+=10;stars++;save();profile();beep(900,.14,'triangle',.07)};
 $('play').onclick=()=>start(false);$('time').onclick=()=>start(true);$('again').onclick=()=>start(timeAttack);$('back').onclick=()=>{over.classList.add('hidden');home.classList.remove('hidden');profile()};
-function start(timed){timeAttack=timed;running=true;last=performance.now();spawn=0;elapsed=0;timeLeft=60;score=0;lives=3;level=1;combo=0;bestCombo=0;fruits=0;coins=0;bosses=0;slow=0;magnet=0;items=[];particles=[];basket.x=W/2;home.classList.add('hidden');over.classList.add('hidden');ui.classList.remove('hidden');requestAnimationFrame(loop);beep(660,.1)}
-function stop(){running=false;ui.classList.add('hidden');over.classList.remove('hidden');const bonus=(fruits>=20?5:0)+(coins>=5?5:0)+(score>=30?10:0)+(bosses>=1?10:0);bank+=bonus;best=Math.max(best,score);let gain=Math.max(5,Math.floor(score/2)+level*2+bosses*5);xp+=gain;while(xp>=40+(pl-1)*20){xp-=40+(pl-1)*20;pl++;stars++}save();$('result').innerHTML=`คะแนน <b>${score}</b><br>Combo สูงสุด ${bestCombo}<br>โบนัส +${bonus} เหรียญ<br>XP +${gain}`}
-function spawnItem(){let r=Math.random(),type='fruit';if(level>=3&&Math.random()<.03)type='boss';else if(r<.14)type='bad';else if(r>.94)type='gold';else if(r>.90)type='coin';else if(r>.865)type='heart';else if(r>.83)type='slow';else if(r>.795)type='magnet';const radius=type==='boss'?34:type==='gold'?25:18+Math.random()*7;items.push({x:30+Math.random()*(W-60),y:-40,r:radius,type,vy:150+Math.random()*65+level*12,hits:0,rot:0})}
-function color(i){return({bad:'#222',coin:'#ffd22e',heart:'#ff4761',slow:'#52a8ff',magnet:'#a95cff',gold:'#ffe342',boss:'#e73636'}[i.type]||['#ff4b42','#ffad29','#56c85d','#ef67aa'][Math.floor(Math.random()*4)])}
-function burst(px,py,col){for(let i=0;i<10;i++){let a=Math.random()*Math.PI*2,s=60+Math.random()*140;particles.push({x:px,y:py,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.45,col})}}
-function update(dt){elapsed+=dt;if(slow>0)slow-=dt;if(magnet>0)magnet-=dt;level=1+Math.floor(elapsed/20);if(timeAttack){timeLeft-=dt;if(timeLeft<=0){timeLeft=0;stop();return}}spawn-=dt;if(spawn<=0){spawnItem();spawn=Math.max(.28,.85-(level-1)*.06)}for(let n=items.length-1;n>=0;n--){let i=items[n],fac=slow>0?.6:1;if(magnet>0&&['fruit','coin','gold'].includes(i.type)){i.x+=(basket.x-i.x)*dt*2.8;i.y+=(basket.y-i.y)*dt*2.8}else i.y+=i.vy*fac*dt;i.rot+=dt*3;if(Math.abs(i.x-basket.x)<basket.w*.55&&i.y+i.r>basket.y&&i.y-i.r<basket.y+basket.h){let remove=true,col=color(i);burst(i.x,i.y,col);if(i.type==='bad'){lives--;combo=0;beep(150,.16,'square',.06);navigator.vibrate?.(80)}else if(i.type==='coin'){bank++;coins++;score+=2;combo++;beep(1000,.08,'triangle',.05)}else if(i.type==='heart'){lives=Math.min(5,lives+1);score++;combo++;beep(650,.12,'sine',.05)}else if(i.type==='slow'){slow=7;score++;combo++;beep(520,.16,'triangle',.05)}else if(i.type==='magnet'){magnet=7;score++;combo++;beep(740,.16,'triangle',.05)}else if(i.type==='gold'){bank+=3;score+=10;combo+=3;beep(1200,.18,'triangle',.08)}else if(i.type==='boss'){i.hits++;score+=3;combo++;beep(320,.12,'square',.06);if(i.hits<3){remove=false;i.y=-30;i.x=40+Math.random()*(W-80)}else{bosses++;bank+=5;score+=20}}else{fruits++;combo++;score+=1+Math.floor(combo/10);beep(700,.045)}bestCombo=Math.max(bestCombo,combo);if(remove)items.splice(n,1);if(lives<=0){stop();return}}else if(i.y-i.r>H+20){if(i.type==='fruit'){lives--;combo=0}items.splice(n,1);if(lives<=0){stop();return}}}for(let n=particles.length-1;n>=0;n--){let p=particles[n];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=220*dt;if(p.life<=0)particles.splice(n,1)}best=Math.max(best,score);save()}
-function draw(){const day=(Math.sin(performance.now()/20000)+1)/2;let grad=x.createLinearGradient(0,0,0,H);grad.addColorStop(0,`rgb(${Math.floor(245-80*day)},${Math.floor(160+60*day)},${Math.floor(150+95*day)})`);grad.addColorStop(1,'#dfffea');x.fillStyle=grad;x.fillRect(0,0,W,H);x.fillStyle='#67be65';x.beginPath();x.ellipse(W*.25,H*.82,W*.45,H*.18,0,0,Math.PI*2);x.fill();x.fillStyle='#43a94c';x.beginPath();x.ellipse(W*.78,H*.85,W*.5,H*.2,0,0,Math.PI*2);x.fill();x.fillStyle='#2f8f40';for(let i=0;i<7;i++){let px=(i+.3)*W/7;x.fillRect(px-5,H-160,10,80);x.beginPath();x.arc(px,H-165,26,0,Math.PI*2);x.fill()}x.fillStyle='#d37a28';x.fillRect(basket.x-basket.w/2,basket.y,basket.w,basket.h);x.fillStyle='#7e451a';x.fillRect(basket.x-basket.w*.58,basket.y-7,basket.w*1.16,8);for(let i of items){x.save();x.translate(i.x,i.y);x.rotate(i.rot);x.fillStyle=color(i);x.beginPath();x.arc(0,0,i.r,0,Math.PI*2);x.fill();if(['fruit','gold'].includes(i.type)){x.fillStyle='#278f36';x.fillRect(2,-i.r-7,12,5)}if(i.type==='heart'){x.fillStyle='#fff';x.fillRect(-3,-10,6,20);x.fillRect(-10,-3,20,6)}x.restore()}for(let p of particles){x.globalAlpha=Math.max(0,p.life/.45);x.fillStyle=p.col;x.fillRect(p.x-3,p.y-3,6,6)}x.globalAlpha=1}
-function hud(){$('score').textContent=`คะแนน ${score}`;$('lives').textContent=`❤ ${lives}`;$('level').textContent=`ด่าน ${level}`;$('timer').textContent=timeAttack?`เวลา ${Math.ceil(timeLeft)} วิ`:'';$('combo').textContent=combo>=3?`COMBO x${combo}`:'';$('mission').textContent=`ผลไม้ ${fruits}/20 • เหรียญ ${coins}/5 • Boss ${bosses}/1 • 🪙 ${bank}`}
-function loop(t){if(!running)return;let dt=Math.min(.033,(t-last)/1000);last=t;update(dt);draw();hud();if(running)requestAnimationFrame(loop)}
+$('settings').onclick=()=>{home.classList.add('hidden');sp.classList.remove('hidden');loadSettingsUI()};
+$('closeSettings').onclick=()=>{sp.classList.add('hidden');home.classList.remove('hidden')};
+$('saveSettings').onclick=()=>{cfg.quality=$('quality').value;cfg.scale=+$('scale').value;cfg.fps=+$('fps').value;cfg.bloom=$('bloom').checked;cfg.fog=$('fog').checked;cfg.particles=$('particleToggle').checked;cfg.weather=$('weatherMode').value;save();resize();sp.classList.add('hidden');home.classList.remove('hidden')};
+function loadSettingsUI(){$('quality').value=cfg.quality;$('scale').value=String(cfg.scale);$('fps').value=String(cfg.fps);$('bloom').checked=cfg.bloom;$('fog').checked=cfg.fog;$('particleToggle').checked=cfg.particles;$('weatherMode').value=cfg.weather}
+
+function start(timed){timeAttack=timed;running=true;last=performance.now();spawn=0;elapsed=0;timeLeft=60;score=0;lives=3;level=1;combo=0;bestCombo=0;fruits=0;coins=0;bosses=0;slow=0;magnet=0;items=[];particles=[];weatherParticles=[];basket.x=W/2;home.classList.add('hidden');over.classList.add('hidden');ui.classList.remove('hidden');requestAnimationFrame(loop);beep(660,.1)}
+function stop(){running=false;ui.classList.add('hidden');over.classList.remove('hidden');const bonus=(fruits>=20?5:0)+(coins>=5?5:0)+(score>=30?10:0)+(bosses>=1?10:0);bank+=bonus;best=Math.max(best,score);let gain=Math.max(5,Math.floor(score/2)+level*2+bosses*5);xp+=gain;while(xp>=40+(pl-1)*20){xp-=40+(pl-1)*20;pl++;stars++}save();$('result').innerHTML=`คะแนน <b>${score}</b><br>Combo สูงสุด ${bestCombo}<br>โบนัส +${bonus} เหรียญ<br>XP +${gain}<br><span class="small">เฉลี่ย ${Math.round(avgFps)} FPS • ${cfg.quality}</span>`}
+
+function spawnItem(){let r=Math.random(),type='fruit';if(level>=3&&Math.random()<.03)type='boss';else if(r<.14)type='bad';else if(r>.94)type='gold';else if(r>.90)type='coin';else if(r>.865)type='heart';else if(r>.83)type='slow';else if(r>.795)type='magnet';const radius=type==='boss'?34:type==='gold'?25:18+Math.random()*7;items.push({x:30+Math.random()*(W-60),y:-40,r:radius,type,vy:150+Math.random()*65+level*12,hits:0,rot:0,hue:Math.random()})}
+function color(i){return({bad:'#22252b',coin:'#ffd22e',heart:'#ff4761',slow:'#52a8ff',magnet:'#a95cff',gold:'#ffe342',boss:'#e73636'}[i.type]||['#ff4b42','#ffad29','#56c85d','#ef67aa'][Math.floor(i.hue*4)])}
+function burst(px,py,col){if(!cfg.particles)return;let count=cfg.quality==='Ultra'?16:cfg.quality==='High'?11:7;for(let i=0;i<count;i++){let a=Math.random()*Math.PI*2,s=60+Math.random()*140;particles.push({x:px,y:py,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.45,col})}}
+function cycleWeather(dt){weatherClock+=dt;if(cfg.weather!=='auto'){weather=cfg.weather;return}if(weatherClock>22){weatherClock=0;weather=['clear','cloudy','fog','rain'][Math.floor(Math.random()*4)]}}
+function updateWeather(dt){cycleWeather(dt);if(!cfg.particles)return;let rate=weather==='rain'?8:weather==='fog'?1:weather==='cloudy'?0.25:0.08;if(Math.random()<rate*dt*10){weatherParticles.push({x:Math.random()*W,y:-10,vx:weather==='rain'?-20:10+Math.random()*20,vy:weather==='rain'?350+Math.random()*180:20+Math.random()*35,life:weather==='rain'?1.2:4,a:weather==='rain'?.45:.12})}}
+function update(dt){elapsed+=dt;if(slow>0)slow-=dt;if(magnet>0)magnet-=dt;level=1+Math.floor(elapsed/20);if(timeAttack){timeLeft-=dt;if(timeLeft<=0){timeLeft=0;stop();return}}spawn-=dt;if(spawn<=0){spawnItem();spawn=Math.max(.28,.85-(level-1)*.06)}updateWeather(dt);
+for(let n=items.length-1;n>=0;n--){let i=items[n],fac=slow>0?.6:1;if(magnet>0&&['fruit','coin','gold'].includes(i.type)){i.x+=(basket.x-i.x)*dt*2.8;i.y+=(basket.y-i.y)*dt*2.8}else i.y+=i.vy*fac*dt;i.rot+=dt*3;if(Math.abs(i.x-basket.x)<basket.w*.55&&i.y+i.r>basket.y&&i.y-i.r<basket.y+basket.h){let remove=true,col=color(i);burst(i.x,i.y,col);if(i.type==='bad'){lives--;combo=0;beep(150,.16,'square',.06);navigator.vibrate?.(80)}else if(i.type==='coin'){bank++;coins++;score+=2;combo++;beep(1000,.08,'triangle',.05)}else if(i.type==='heart'){lives=Math.min(5,lives+1);score++;combo++;beep(650,.12,'sine',.05)}else if(i.type==='slow'){slow=7;score++;combo++;beep(520,.16,'triangle',.05)}else if(i.type==='magnet'){magnet=7;score++;combo++;beep(740,.16,'triangle',.05)}else if(i.type==='gold'){bank+=3;score+=10;combo+=3;beep(1200,.18,'triangle',.08)}else if(i.type==='boss'){i.hits++;score+=3;combo++;beep(320,.12,'square',.06);if(i.hits<3){remove=false;i.y=-30;i.x=40+Math.random()*(W-80)}else{bosses++;bank+=5;score+=20}}else{fruits++;combo++;score+=1+Math.floor(combo/10);beep(700,.045)}bestCombo=Math.max(bestCombo,combo);if(remove)items.splice(n,1);if(lives<=0){stop();return}}else if(i.y-i.r>H+20){if(i.type==='fruit'){lives--;combo=0}items.splice(n,1);if(lives<=0){stop();return}}}
+for(let n=particles.length-1;n>=0;n--){let p=particles[n];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=220*dt;if(p.life<=0)particles.splice(n,1)}
+for(let n=weatherParticles.length-1;n>=0;n--){let p=weatherParticles[n];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.life<=0||p.y>H+20)weatherParticles.splice(n,1)}
+best=Math.max(best,score);save()}
+
+function shadeCircle(cx,cy,r,base,glow=false){let g=x.createRadialGradient(cx-r*.35,cy-r*.45,r*.08,cx,cy,r);g.addColorStop(0,'#fff');g.addColorStop(.14,base);g.addColorStop(1,'#0008');x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.fill();if(glow&&cfg.bloom){x.save();x.globalCompositeOperation='lighter';x.globalAlpha=.28;x.shadowBlur=28;x.shadowColor=base;x.fillStyle=base;x.beginPath();x.arc(cx,cy,r*.88,0,Math.PI*2);x.fill();x.restore()}}
+function draw(){const day=(Math.sin(performance.now()/24000)+1)/2;let skyTop=weather==='rain'?'#536777':weather==='cloudy'?'#91a7b8':`rgb(${Math.floor(245-90*day)},${Math.floor(155+70*day)},${Math.floor(145+100*day)})`;let grad=x.createLinearGradient(0,0,0,H);grad.addColorStop(0,skyTop);grad.addColorStop(1,weather==='rain'?'#a9b8b5':'#ddffea');x.fillStyle=grad;x.fillRect(0,0,W,H);
+let sunX=W*(.15+.7*day),sunY=85+Math.sin(day*Math.PI)*90;if(weather!=='rain'){shadeCircle(sunX,sunY,28,'#ffd85b',true)}
+x.fillStyle='#6eb866';x.beginPath();x.ellipse(W*.25,H*.82,W*.5,H*.19,0,0,Math.PI*2);x.fill();x.fillStyle='#3d9448';x.beginPath();x.ellipse(W*.78,H*.86,W*.54,H*.22,0,0,Math.PI*2);x.fill();
+for(let i=0;i<7;i++){let px=(i+.3)*W/7;x.fillStyle='#71451f';x.fillRect(px-5,H-160,10,80);x.fillStyle='#24753b';shadeCircle(px,H-165,25,'#2f9c4e')}
+x.fillStyle='#d88432';x.fillRect(basket.x-basket.w/2,basket.y,basket.w,basket.h);x.fillStyle='#7e451a';x.fillRect(basket.x-basket.w*.58,basket.y-7,basket.w*1.16,8);x.fillStyle='#f4b064';x.fillRect(basket.x-basket.w*.45,basket.y+5,basket.w*.9,4);
+for(let i of items){x.save();x.translate(i.x,i.y);x.rotate(i.rot);shadeCircle(0,0,i.r,color(i),['coin','gold','heart','slow','magnet'].includes(i.type));if(['fruit','gold'].includes(i.type)){x.fillStyle='#278f36';x.fillRect(2,-i.r-7,12,5)}if(i.type==='heart'){x.fillStyle='#fff';x.fillRect(-3,-10,6,20);x.fillRect(-10,-3,20,6)}x.restore()}
+for(let p of particles){x.globalAlpha=Math.max(0,p.life/.45);x.fillStyle=p.col;x.fillRect(p.x-3,p.y-3,6,6)}x.globalAlpha=1;
+for(let p of weatherParticles){x.globalAlpha=Math.max(0,Math.min(p.a,p.life));x.strokeStyle='#d8f4ff';x.fillStyle='#fff';if(weather==='rain'){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(p.x-5,p.y+16);x.stroke()}else{x.beginPath();x.arc(p.x,p.y,8,0,Math.PI*2);x.fill()}}x.globalAlpha=1;
+if(cfg.fog&&(weather==='fog'||weather==='cloudy')){let fg=x.createLinearGradient(0,H*.35,0,H);fg.addColorStop(0,'#ffffff00');fg.addColorStop(1,weather==='fog'?'#eef6f0aa':'#edf4f077');x.fillStyle=fg;x.fillRect(0,H*.3,W,H*.7)}
+if(weather==='rain'){x.fillStyle='#0d203522';x.fillRect(0,0,W,H)}
+}
+function hud(){$('score').textContent=`คะแนน ${score}`;$('lives').textContent=`❤ ${lives}`;$('level').textContent=`ด่าน ${level}`;$('timer').textContent=timeAttack?`เวลา ${Math.ceil(timeLeft)} วิ`:'';$('combo').textContent=combo>=3?`COMBO x${combo}`:'';$('mission').textContent=`ผลไม้ ${fruits}/20 • เหรียญ ${coins}/5 • Boss ${bosses}/1 • 🪙 ${bank}`;$('weather').textContent=`${weather.toUpperCase()} • ${cfg.quality} • ${Math.round(avgFps)} FPS`}
+function autoTune(){if(cfg.quality==='Ultra'||cfg.quality==='High'){if(avgFps<42){cfg.bloom=false;cfg.scale=Math.max(.85,cfg.scale-.15);resize()}}if(avgFps<30){cfg.particles=false;cfg.fog=false;cfg.scale=.7;resize()}}
+function loop(t){if(!running)return;let minStep=1000/cfg.fps;if(t-last<minStep*.75){requestAnimationFrame(loop);return}let dt=Math.min(.04,(t-last)/1000);last=t;fpsAcc+=dt;fpsFrames++;if(fpsAcc>=1){avgFps=fpsFrames/fpsAcc;fpsAcc=0;fpsFrames=0;autoTune()}update(dt);draw();hud();if(running)requestAnimationFrame(loop)}
 function move(px){basket.x=Math.max(basket.w/2+8,Math.min(W-basket.w/2-8,px))}
-c.addEventListener('pointerdown',e=>move(e.clientX));c.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch')move(e.clientX)});draw()})();
+c.addEventListener('pointerdown',e=>move(e.clientX));c.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch')move(e.clientX)});
+draw();})();
 </script>
 </body>
 </html>
