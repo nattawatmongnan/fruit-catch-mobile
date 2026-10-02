@@ -1,0 +1,14 @@
+{
+  "name": "Fruit Catch Mobile",
+  "short_name": "Fruit Catch",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#62C7FF",
+  "theme_color": "#62C7FF",
+  "description": "เกมรับผลไม้ เล่นง่ายทุกวัย",
+  "icons": [
+    {"src": "/app-icon.webp", "sizes": "192x192", "type": "image/webp", "purpose": "any maskable"}
+  ]
+}
